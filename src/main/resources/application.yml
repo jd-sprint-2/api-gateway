@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: competence-service
+          uri: lb://COMPETENCE-SERVICE
+          predicates:
+            - Path=/competences/**
+          filters:
+            - AuthenticationFilter
+
+        - id: skill-service
+          uri: lb://SKILL-SERVICE
+          predicates:
+            - Path=/skills/**
+          filters:
+            - AuthenticationFilter
+
+        - id: identity-service
+          uri: lb://IDENTITY-SERVICE
+          predicates:
+            - Path=/auth/**
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+
+server:
+  port: 8888
+
+jwt:
+  secret: 497a05a776a2e45150664c2bdab8803fce4d4c46c0d014a6bced45febcc3ea0d984f604963c3b10146a5f1527c5946b96a9852c840141f1f45554f554304739d95b806388a73ff5e0b47b2d01a6fa733262540dc2b5e25b712e9414aef38a6460325670a06a7871269b2c075ca1d9e702930fec958c7c4e212d3003f1bbf80384049386f8b10a6ba8677989474661875976465e54d83feea7da54ff52b43af00a0c64b03e7e6eafe737933ccbcc0b7ae8213446cbae8077be9954238e3d02dbf3932cc09ca6c8bbf9b08ea8358645911f6cd88d8df80fa90ac007c44002460c330d1bbfaaaef5814395bd38fc148f84df706c84a5548bb5074cc2659854a58c9
